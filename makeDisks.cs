@@ -68,7 +68,7 @@ namespace Watch.movement
             Watch.gears.BaseGear DailyDriver = new Watch.gears.BaseGear();
             DailyDriver.GearName = "DailyDriver";
             DailyDriver.GearID = 1;
-            DailyDriver.Rotation = gears.BaseGear._Rotation.Clockwise;
+            DailyDriver.Rotation = gears.BaseGear._Rotation.AntiClockwise;
 
             Watch.gears.BaseGear MoonDisk = new Watch.gears.BaseGear();
             MoonDisk.GearName = "MoonDisk";
