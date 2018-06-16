@@ -12,13 +12,13 @@ namespace Watch
         {
 
             Watch.Program oMakeMoonDisk = new Watch.Program();
-            oMakeMoonDisk.MakeCompleteMoonDisk(oMakeMoonDisk);
+            oMakeMoonDisk.MakeCompleteMoonDisk();
             // Test configurations 1 - 7 all combinations of single and compound gears
             //movement.makeDisks oMoonK = new movement.makeDisks();
             //movement.movementCase oCase = oMoonK.TestDiskConfiguration5();
         }
 
-        public void MakeCompleteMoonDisk(Watch.Program oMakeMoonDisk)
+        public void MakeCompleteMoonDisk()
         {
             movement.supporting oMoonK = new movement.supporting();
             movement.MoonRealStatus oMoonRealStatus = new movement.MoonRealStatus();
@@ -53,6 +53,13 @@ namespace Watch
             NotchesMoonDisk = 90.0;
             SynoticPhaseThisMoonDiskMinutes = ((7 / 30.0) * (90 / 32.0)) * 1440 * NotchesMoonDisk / 2;
             mC = mD.MakeMoonDisk90Daily();
+            mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); // now get the movement working
+            oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
+
+            // second, get moonphase for 59 notch disk
+            NotchesMoonDisk = 59.0;
+            SynoticPhaseThisMoonDiskMinutes = (1440.0 * (NotchesMoonDisk)) / 2;
+            mC = mD.MakeMoonDisk59Daily();
             mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); // now get the movement working
             oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
 

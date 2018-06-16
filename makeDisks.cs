@@ -62,7 +62,34 @@ namespace Watch.movement
             return oMovementCase;
         }
 
+        public movementCase MakeMoonDisk59Daily()
+        {
+            // create each gear and assign name first
+            Watch.gears.BaseGear DailyDriver = new Watch.gears.BaseGear();
+            DailyDriver.GearName = "DailyDriver";
+            DailyDriver.GearID = 1;
+            DailyDriver.Rotation = gears.BaseGear._Rotation.Clockwise;
 
+            Watch.gears.BaseGear MoonDisk = new Watch.gears.BaseGear();
+            MoonDisk.GearName = "MoonDisk";
+            MoonDisk.GearID = 2;
+
+            // now create the properties of each gear and their relationships to each other
+            DailyDriver.BaseTeeth = 12;
+            DailyDriver.BaseTeethDriving = true;
+            DailyDriver.BaseTeethDrivingGearID = MoonDisk.GearID;
+
+            MoonDisk.BaseTeeth = 59;
+            MoonDisk.BaseTeethDrivenBy = true;
+            MoonDisk.BaseTeethDrivenByGearID = DailyDriver.GearID;
+
+            // create the movement
+            Watch.movement.movementCase oMovementCase = new Watch.movement.movementCase();
+            oMovementCase.BaseGears.Add(DailyDriver);
+            oMovementCase.BaseGears.Add(MoonDisk);
+
+            return oMovementCase;
+        }
 
 
         public movementCase MakeMoonDisk135Hourly()
