@@ -1,9 +1,4 @@
 # WatchMovement
-Watch movement
-
-More at
-
-mechmoveonwatches.blogspot.com.
 
 This project serves to emulate watch movements depicting various astronomical phenomena, such as extended precision moon phase and in the future, other similar events occurring in the universe. The goal is to emulate a mechanical watch movement, with all the inherent inaccuracies and limitations.
 
