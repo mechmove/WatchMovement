@@ -34,8 +34,6 @@ namespace Watch
             //DateTime dT = Convert.ToDateTime("June 13, 2018 12:00 am");
             //DateTime dT = Convert.ToDateTime("Dec. 27, 2118 05:08 PM");
             //DateTime dT = Convert.ToDateTime("Dec. 26, 2140 12:00 AM");
-
-
             DateTime findPhaseUTC = dT.ToUniversalTime();
             TimeSpan ts = findPhaseUTC.Subtract(oMoonK.KnownFullMoon_UTC_used);
 
@@ -62,7 +60,6 @@ namespace Watch
             mC = mD.MakeMoonDisk59Daily();
             mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); // now get the movement working
             oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
-
         }
     }
 }

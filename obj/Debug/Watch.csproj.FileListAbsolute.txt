@@ -1,0 +1,6 @@
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\bin\Debug\Watch.exe
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\bin\Debug\Watch.pdb
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.csprojAssemblyReference.cache
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.csproj.CoreCompileInputs.cache
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.exe
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.pdb
