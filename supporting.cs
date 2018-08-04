@@ -37,11 +37,17 @@ namespace Watch.movement
     class supporting
 
     {
+
+        public enum _BaseDriverTransmission { smooth, stepwise }
+        public enum _BaseDriverStepMethod { runOver, runUnder}
+        public enum _MoonPhaseDiskBaseUnits { seconds, minutes, hourly, daily }
+
         public enum _SpinMode { Purist, FastAndDirty}
         public _SpinMode SpinMode { get; set; }
-        
-        // this is the publicly known constant used for long term calcs:
-        public double SynoticPhase_Minutes_Real = 42524.0483333333;
+
+
+    // this is the publicly known constant used for long term calcs:
+    public double SynoticPhase_Minutes_Real = 42524.0483333333;
         // real moonphase reference from Internet, this number will not be precise due to the 
         // nature of moonphase calcs
         public DateTime KnownFullMoon_UTC_used = Convert.ToDateTime("5/29/2018  14:19:00"); // UTC time
@@ -170,6 +176,79 @@ namespace Watch.movement
 
             return "Transit";
         }
+
+        public double CalcSynoticPhaseThisMoonDiskMinutes(double NotchesMoonDisk, 
+            movement.movementCase mC, 
+            _MoonPhaseDiskBaseUnits Units, 
+            _BaseDriverTransmission BaseDriverTransmission, 
+            _BaseDriverStepMethod BaseDriverStepMethod)
+
+        {double SingleMoonPhase  = NotchesMoonDisk / 2.0;
+            // how long before last gear reaches SingleMoonPhase = 1/2 moon disk?
+            double iCntr = 1.0;
+
+            double iCntr_Last=0;
+            double dFinalGearPosition_Last = 0;
+
+            double dFinalGearPosition = 0;
+            for (iCntr = 1; iCntr < double.PositiveInfinity; iCntr++)
+            {
+                mC.incNotches(ref mC, 1); // now get the movement working
+                dFinalGearPosition = mC.GetFinalGearPosition(mC);
+                if (dFinalGearPosition > SingleMoonPhase)
+                {
+                    switch (BaseDriverTransmission)
+                    {
+                        // does the first input gear Step or Rotate Smoothly?
+                        // ex.  gears can move smoothly for better resolution.
+                        //      or they can STEP into the next notch, this results in the worest resolution!
+                        case _BaseDriverTransmission.stepwise:
+                            {
+                                switch (BaseDriverStepMethod)
+                                {   // do you want to assume the synotic phase runs just under or over 
+                                     // 1/2 revolution of the moon disk?
+                                    case _BaseDriverStepMethod.runOver:
+                                        {
+                                            break;
+                                        }
+                                    case _BaseDriverStepMethod.runUnder:
+                                        {
+                                            iCntr = iCntr_Last;
+                                            dFinalGearPosition = dFinalGearPosition_Last ;
+                                            break;
+                                        }
+                                }
+
+                                break;
+                            }
+                        case _BaseDriverTransmission.smooth:
+                            {
+                                iCntr = (iCntr / dFinalGearPosition) * SingleMoonPhase;
+                                break;
+                            }
+                    }
+
+                    break;
+                }
+                iCntr_Last = iCntr;
+                dFinalGearPosition_Last = dFinalGearPosition;
+            }
+
+
+            switch (Units)
+            {// rtn Minutes
+                case _MoonPhaseDiskBaseUnits.daily:
+                    return (double)iCntr * 24 * 60; // rtn Minutes
+                case _MoonPhaseDiskBaseUnits.hourly:
+                    return (double)iCntr * 60; // rtn Minutes
+                case _MoonPhaseDiskBaseUnits.minutes:
+                    return -1; // not defined yet
+                case _MoonPhaseDiskBaseUnits.seconds:
+                    return -1;// not defined yet
+            }
+            return -1;
+        }
+
 
         public movement.MoonDiskStatus RunMoonModule(movement.movementCase mC, double NotchesMoonDisk, double SynoticPhaseThisMoonDiskMinutes, TimeSpan ts, DateTime findPhaseUTC, double LunationsElapsedReal)
         {
