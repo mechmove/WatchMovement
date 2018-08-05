@@ -223,6 +223,11 @@ namespace Watch.movement
                             }
                         case _BaseDriverTransmission.smooth:
                             {
+                                // at this point, we know the iCntr should be exactly between 
+                                // iCntr and iCntr_Last. This can be calculated by using the ratio of 
+                                // of iCntr to dFinalGearPosition, or even iCntr_Last to dFinalGearPosition_Last
+                                // and multiplying times SingleMoonPhase. 
+                                // this will return the correct 'smooth' elapsed time period.
                                 iCntr = (iCntr / dFinalGearPosition) * SingleMoonPhase;
                                 break;
                             }
