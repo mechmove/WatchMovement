@@ -1,8 +1,18 @@
 This is a sample template file that needs to be followed precisely to define your geartrain.
 Do NOT include any comments or extra lines, this is a structured file.
 
-There are 2 types of gears, "Base", and "InnerGear". All parms need to be listed, even if they do not have values.
+There are 2 types of gears, "Base", and "InnerGear". 
 
+All parms need to be listed, even if they do not have values. Exception, the following keys need to set to "false" all the time, unless they are driving or being driven by another connected gear:
+
+BaseTeethDrivenBy=false
+BaseTeethDriving=false
+InnerTeethDriving=false
+InnerTeethDrivenBy=false
+
+Please consult included (working) gear trains to see how it works.
+
+-------------- Base Gear --------------
 GearType=Base
 Gear_ID=1
 GearName=
@@ -13,7 +23,7 @@ BaseTeethDrivenBy=false
 BaseTeethDrivenByGearID= 
 BaseTeethDriving=false
 BaseTeethDrivingGearID= 
-
+-------------- Inner (Compound) Gear --------------
 GearType=InnerGear
 Gear_ID=2
 GearName=
