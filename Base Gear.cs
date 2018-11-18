@@ -12,6 +12,8 @@ namespace Watch.gears
         public enum _Rotation { Unknown, Clockwise, AntiClockwise }
         public _Rotation Rotation { get; set; }
 
+        public enum _DiskBaseUnitDriver { unknown, seconds, minutes, hourly, daily }
+        public _DiskBaseUnitDriver DiskBaseUnitDriver { get; set; }
         public string GearName { get; set; }
         public int GearID { get; set; }
 

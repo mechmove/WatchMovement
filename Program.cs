@@ -39,47 +39,27 @@ namespace Watch
 
             // first, get the real moonphase:
             oMoonRealStatus = oMoonK.GetRealMoonPhase(oMoonK.SynoticPhase_Minutes_Real, ts, findPhaseUTC);
+            
+            //mC = mD.MakeMoonDisk("MakeMoonDisk135Hourly.txt");        // get moonphase for 135 notch disk
+            //mC = mD.MakeMoonDisk("MakeMoonDisk90Daily.txt");          // get moonphase for 90 notch disk
+            mC = mD.MakeMoonDisk("MakeMoonDisk59Daily.txt");            // get moonphase for 59 notch disk
+            NotchesMoonDisk = oMoonK.GetFinalDiskNotches(mC);
 
-            // second, get moonphase for 135 notch disk
-            NotchesMoonDisk = 135.0;
-            mC = mD.MakeMoonDisk135Hourly();
-
-            //SynoticPhaseThisMoonDiskMinutes = (105 / 10.0) * 60.0 * (NotchesMoonDisk) / 2;
             SynoticPhaseThisMoonDiskMinutes = oMoonK.CalcSynoticPhaseThisMoonDiskMinutes(NotchesMoonDisk, 
                 mC, 
-                movement.supporting._MoonPhaseDiskBaseUnits.hourly, 
                 movement.supporting._BaseDriverTransmission.smooth, 
                 movement.supporting._BaseDriverStepMethod.runUnder);
             
-            mC.incNotches(ref mC, (int)Math.Floor(ts.TotalHours)); // now get the movement working
-            oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
-
-            // third, get moonphase for 90 notch disk
-            NotchesMoonDisk = 90.0;
-            mC = mD.MakeMoonDisk90Daily();
-
-            //SynoticPhaseThisMoonDiskMinutes = ((7 / 30.0) * (90 / 32.0)) * 1440 * NotchesMoonDisk / 2;
-            SynoticPhaseThisMoonDiskMinutes = oMoonK.CalcSynoticPhaseThisMoonDiskMinutes(NotchesMoonDisk,
-                mC,
-                movement.supporting._MoonPhaseDiskBaseUnits.daily,
-                movement.supporting._BaseDriverTransmission.smooth,
-                movement.supporting._BaseDriverStepMethod.runUnder);
-
-            mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); // now get the movement working
-            oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
-
-            // fourth, get moonphase for 59 notch disk
-            NotchesMoonDisk = 59.0;
-            mC = mD.MakeMoonDisk59Daily();
-
-            //SynoticPhaseThisMoonDiskMinutes = (1440.0 * (NotchesMoonDisk)) / 2;
-            SynoticPhaseThisMoonDiskMinutes = oMoonK.CalcSynoticPhaseThisMoonDiskMinutes(NotchesMoonDisk,
-                mC,
-                movement.supporting._MoonPhaseDiskBaseUnits.daily,
-                movement.supporting._BaseDriverTransmission.smooth,
-                movement.supporting._BaseDriverStepMethod.runUnder);
-
-            mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); // now get the movement working
+            switch (mC.BaseGears[0].DiskBaseUnitDriver)
+            {// now get the movement working
+                case gears.BaseGear._DiskBaseUnitDriver.hourly:
+                    mC.incNotches(ref mC, (int)Math.Floor(ts.TotalHours)); 
+                    break;
+                case gears.BaseGear._DiskBaseUnitDriver.daily:
+                    mC.incNotches(ref mC, (int)Math.Floor(ts.TotalDays)); 
+                    break;
+            }
+            // get all final moon phase parameters for type of movement and accuracy
             oMoonDiskStatus = oMoonK.RunMoonModule(mC, NotchesMoonDisk, SynoticPhaseThisMoonDiskMinutes, ts, findPhaseUTC, oMoonRealStatus.LunationsElapsed);
         }
     }

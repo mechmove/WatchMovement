@@ -40,7 +40,6 @@ namespace Watch.movement
 
         public enum _BaseDriverTransmission { smooth, stepwise }
         public enum _BaseDriverStepMethod { runOver, runUnder}
-        public enum _MoonPhaseDiskBaseUnits { seconds, minutes, hourly, daily }
 
         public enum _SpinMode { Purist, FastAndDirty}
         public _SpinMode SpinMode { get; set; }
@@ -179,7 +178,6 @@ namespace Watch.movement
 
         public double CalcSynoticPhaseThisMoonDiskMinutes(double NotchesMoonDisk, 
             movement.movementCase mC, 
-            _MoonPhaseDiskBaseUnits Units, 
             _BaseDriverTransmission BaseDriverTransmission, 
             _BaseDriverStepMethod BaseDriverStepMethod)
 
@@ -240,18 +238,23 @@ namespace Watch.movement
             }
 
 
-            switch (Units)
+            switch (mC.BaseGears[0].DiskBaseUnitDriver)
             {// rtn Minutes
-                case _MoonPhaseDiskBaseUnits.daily:
+                case gears.BaseGear._DiskBaseUnitDriver.daily:
                     return (double)iCntr * 24 * 60; // rtn Minutes
-                case _MoonPhaseDiskBaseUnits.hourly:
+                case gears.BaseGear._DiskBaseUnitDriver.hourly:
                     return (double)iCntr * 60; // rtn Minutes
-                case _MoonPhaseDiskBaseUnits.minutes:
+                case gears.BaseGear._DiskBaseUnitDriver.minutes:
                     return -1; // not defined yet
-                case _MoonPhaseDiskBaseUnits.seconds:
+                case gears.BaseGear._DiskBaseUnitDriver.seconds:
                     return -1;// not defined yet
             }
             return -1;
+        }
+
+        public int GetFinalDiskNotches(movement.movementCase mC)
+        {
+            return mC.BaseGears[mC.BaseGears.Count()-1].BaseTeeth;
         }
 
 

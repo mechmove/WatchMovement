@@ -1,0 +1,31 @@
+This is a sample template file that needs to be followed precisely to define your geartrain.
+Do NOT include any comments or extra lines, this is a structured file.
+
+There are 2 types of gears, "Base", and "InnerGear". All parms need to be listed, even if they do not have values.
+
+GearType=Base
+Gear_ID=1
+GearName=
+DiskBaseUnitDriver=
+Rotation=
+BaseTeeth=
+BaseTeethDrivenBy=false
+BaseTeethDrivenByGearID= 
+BaseTeethDriving=false
+BaseTeethDrivingGearID= 
+
+GearType=InnerGear
+Gear_ID=2
+GearName=
+DiskBaseUnitDriver=
+Rotation=
+BaseTeeth=
+InnerTeeth=
+BaseTeethDrivenBy=false
+BaseTeethDrivenByGearID=
+BaseTeethDriving=false
+BaseTeethDrivingGearID= 
+InnerTeethDriving=false
+InnerTeethDrivingGearID=
+InnerTeethDrivenBy=false
+InnerTeethDrivenByGearID=

@@ -3,11 +3,130 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Watch.movement
 {
     class makeDisks
     {
+
+        public movementCase MakeMoonDisk (string sMoonDiskConfig) {
+
+            Watch.movement.movementCase oMovementCase = new Watch.movement.movementCase();
+
+            string GearType=string.Empty;
+            int GearID;
+            string line=string.Empty;
+
+            using (StreamReader reader = new StreamReader(sMoonDiskConfig))
+            {
+                while (!reader.EndOfStream) {
+                line = reader.ReadLine(); 
+                GearType= line.Substring(line.IndexOf("=",0)+1);
+                line = reader.ReadLine(); 
+                GearID= Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                switch (GearType)
+                {
+                    case "Base":
+                        {
+                            Watch.gears.BaseGear Base = new Watch.gears.BaseGear();
+                            line = reader.ReadLine(); 
+                            Base.GearName = line.Substring(line.IndexOf("=",0)+1);
+
+                            line = reader.ReadLine(); 
+                            string DiskBaseUnitDriver = line.Substring(line.IndexOf("=",0)+1);
+                            if (DiskBaseUnitDriver.Equals("hourly")) {
+                                Base.DiskBaseUnitDriver = gears.BaseGear._DiskBaseUnitDriver.hourly;
+                                } else if (DiskBaseUnitDriver.Equals("daily")) {Base.DiskBaseUnitDriver= gears.BaseGear._DiskBaseUnitDriver.daily;}
+
+                            Base.GearID = GearID;
+                            line = reader.ReadLine(); 
+                            string Direction= line.Substring(line.IndexOf("=",0)+1);
+
+                            if (Direction.Equals("Clockwise")) {
+                                Base.Rotation = gears.BaseGear._Rotation.Clockwise;
+                                } else if (Direction.Equals("AntiClockwise")) {Base.Rotation = gears.BaseGear._Rotation.AntiClockwise;}
+
+                            line = reader.ReadLine(); 
+                            Base.BaseTeeth = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            Base.BaseTeethDrivenBy = Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            if (Base.BaseTeethDrivenBy) {
+                                Base.BaseTeethDrivenByGearID = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+                            line = reader.ReadLine(); 
+                            Base.BaseTeethDriving =  Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+
+                            if (Base.BaseTeethDriving) {
+                                Base.BaseTeethDrivingGearID = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+                            oMovementCase.BaseGears.Add(Base);
+                            break;
+                        }
+                    case "InnerGear":
+                        {
+                            Watch.gears.InnerGear Inner = new Watch.gears.InnerGear();
+                            line = reader.ReadLine(); 
+                            Inner.GearName = line.Substring(line.IndexOf("=",0)+1);
+
+                            line = reader.ReadLine(); 
+                            string DiskBaseUnitDriver = line.Substring(line.IndexOf("=",0)+1);
+                            if (DiskBaseUnitDriver.Equals("hourly")) {
+                                Inner.DiskBaseUnitDriver = gears.BaseGear._DiskBaseUnitDriver.hourly;
+                                } else if (DiskBaseUnitDriver.Equals("daily")) {Inner.DiskBaseUnitDriver= gears.BaseGear._DiskBaseUnitDriver.daily;}
+
+
+                            Inner.GearID = GearID;
+                            line = reader.ReadLine(); 
+                            string Direction= line.Substring(line.IndexOf("=",0)+1);
+                            if (Direction.Equals("Clockwise")) {
+                                Inner.Rotation = gears.BaseGear._Rotation.Clockwise;
+                                } else if (Direction.Equals("AntiClockwise")) {Inner.Rotation = gears.BaseGear._Rotation.AntiClockwise;}
+                            
+                            line = reader.ReadLine(); 
+                            Inner.BaseTeeth = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            Inner.InnerTeeth= Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            Inner.BaseTeethDrivenBy = Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            if (Inner.BaseTeethDrivenBy) {
+                                Inner.BaseTeethDrivenByGearID = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+
+                            line = reader.ReadLine(); 
+                            Inner.BaseTeethDriving = Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            if (Inner.BaseTeethDriving) {
+                                Inner.BaseTeethDrivingGearID = Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+
+                            line = reader.ReadLine(); 
+                            Inner.InnerTeethDriving =  Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            if (Inner.InnerTeethDriving) {
+                                Inner.InnerTeethDrivingGearID= Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+
+                            line = reader.ReadLine(); 
+                            Inner.InnerTeethDrivenBy =  Convert.ToBoolean(line.Substring(line.IndexOf("=",0)+1));
+                            line = reader.ReadLine(); 
+                            if (Inner.InnerTeethDrivenBy) {
+                                Inner.InnerTeethDrivenByGearID= Convert.ToInt16(line.Substring(line.IndexOf("=",0)+1));
+                                }
+
+                            oMovementCase.BaseGears.Add(Inner);
+                            break;
+                        }
+                }
+                }
+            }
+
+            return oMovementCase;
+        }
+
         public movementCase MakeMoonDisk90Daily()
         {
             // create each gear and assign name first
@@ -15,6 +134,7 @@ namespace Watch.movement
             BaseDailyDriver.GearName = "BaseDailyDriver";
             BaseDailyDriver.GearID = 1;
             BaseDailyDriver.Rotation = gears.BaseGear._Rotation.AntiClockwise;
+            BaseDailyDriver.DiskBaseUnitDriver = gears.BaseGear._DiskBaseUnitDriver.daily;
 
             Watch.gears.InnerGear DailyDisk = new Watch.gears.InnerGear();
             DailyDisk.GearName = "DailyDriver";
@@ -69,6 +189,7 @@ namespace Watch.movement
             DailyDriver.GearName = "DailyDriver";
             DailyDriver.GearID = 1;
             DailyDriver.Rotation = gears.BaseGear._Rotation.AntiClockwise;
+            DailyDriver.DiskBaseUnitDriver = gears.BaseGear._DiskBaseUnitDriver.daily;
 
             Watch.gears.BaseGear MoonDisk = new Watch.gears.BaseGear();
             MoonDisk.GearName = "MoonDisk";
@@ -90,7 +211,6 @@ namespace Watch.movement
 
             return oMovementCase;
         }
-
 
         public movementCase MakeMoonDisk135Hourly()
         {
