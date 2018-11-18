@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,13 +47,15 @@ namespace Watch.movement
 
 
     // this is the publicly known constant used for long term calcs:
-    public double SynoticPhase_Minutes_Real = 42524.0483333333;
+    //public double SynoticPhase_Minutes_Real = 42524.0483333333;
         // real moonphase reference from Internet, this number will not be precise due to the 
         // nature of moonphase calcs
-        public DateTime KnownFullMoon_UTC_used = Convert.ToDateTime("5/29/2018  14:19:00"); // UTC time
+        //public DateTime KnownFullMoon_UTC_used = Convert.ToDateTime("5/29/2018  14:19:00"); // UTC time
 
         public movement.MoonRealStatus GetRealMoonPhase(double SynoticPhaseRealMinutes, TimeSpan ts,DateTime findPhaseUTC)
         {
+            DateTime KnownFullMoon_UTC_used = Convert.ToDateTime(ConfigurationSettings.AppSettings.Get("KnownFullMoon_UTC_used"));
+
             movement.MoonRealStatus oRealMoonStatus = new movement.MoonRealStatus();
             movement.supporting oSupport = new movement.supporting();
 
@@ -85,6 +88,9 @@ namespace Watch.movement
 
         public double GetPrecision(double k)
         {
+
+            Double SynoticPhase_Minutes_Real = Convert.ToDouble(ConfigurationSettings.AppSettings.Get("SynoticPhase_Minutes_Real"));
+
             // find precision here:
             Double Years = (k * (1440 / (SynoticPhase_Minutes_Real - k))) / 60 / 24 / 365.25;
 
@@ -263,6 +269,8 @@ namespace Watch.movement
             supporting oMoonK = new supporting();
             MoonDiskStatus oMoonDiskStatus = new MoonDiskStatus();
             makeDisks oMakeMoonDisk = new makeDisks();
+            Double SynoticPhase_Minutes_Real = Convert.ToDouble(ConfigurationSettings.AppSettings.Get("SynoticPhase_Minutes_Real"));
+            DateTime KnownFullMoon_UTC_used = Convert.ToDateTime(ConfigurationSettings.AppSettings.Get("KnownFullMoon_UTC_used"));
 
             oMoonDiskStatus.LunationsElapsed = ts.TotalMinutes / SynoticPhaseThisMoonDiskMinutes;
             oMoonDiskStatus.FastOrSlowMinutes = (double)(oMoonDiskStatus.LunationsElapsed - LunationsElapsedReal) * SynoticPhase_Minutes_Real;

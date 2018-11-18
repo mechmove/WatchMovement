@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,14 +36,18 @@ namespace Watch
             //DateTime dT = Convert.ToDateTime("Dec. 27, 2118 05:08 PM");
             //DateTime dT = Convert.ToDateTime("Dec. 26, 2140 12:00 AM");
             DateTime findPhaseUTC = dT.ToUniversalTime();
-            TimeSpan ts = findPhaseUTC.Subtract(oMoonK.KnownFullMoon_UTC_used);
+
+            Double SynoticPhase_Minutes_Real = Convert.ToDouble(ConfigurationSettings.AppSettings.Get("SynoticPhase_Minutes_Real"));
+            DateTime KnownFullMoon_UTC_used = Convert.ToDateTime(ConfigurationSettings.AppSettings.Get("KnownFullMoon_UTC_used"));
+
+            TimeSpan ts = findPhaseUTC.Subtract(KnownFullMoon_UTC_used);
 
             // first, get the real moonphase:
-            oMoonRealStatus = oMoonK.GetRealMoonPhase(oMoonK.SynoticPhase_Minutes_Real, ts, findPhaseUTC);
+            oMoonRealStatus = oMoonK.GetRealMoonPhase(SynoticPhase_Minutes_Real, ts, findPhaseUTC);
             
-            //mC = mD.MakeMoonDisk("MakeMoonDisk135Hourly.txt");        // get moonphase for 135 notch disk
+            mC = mD.MakeMoonDisk("MakeMoonDisk135Hourly.txt");        // get moonphase for 135 notch disk
             //mC = mD.MakeMoonDisk("MakeMoonDisk90Daily.txt");          // get moonphase for 90 notch disk
-            mC = mD.MakeMoonDisk("MakeMoonDisk59Daily.txt");            // get moonphase for 59 notch disk
+            //mC = mD.MakeMoonDisk("MakeMoonDisk59Daily.txt");            // get moonphase for 59 notch disk
             NotchesMoonDisk = oMoonK.GetFinalDiskNotches(mC);
 
             SynoticPhaseThisMoonDiskMinutes = oMoonK.CalcSynoticPhaseThisMoonDiskMinutes(NotchesMoonDisk, 

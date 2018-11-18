@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\bin",
+    "\\bin\\Debug"
   ],
-  "SelectedNode": "\\bin",
+  "SelectedNode": "\\bin\\Debug\\MakeMoonDisk90Daily.txt",
   "PreviewInSolutionExplorer": false
 }

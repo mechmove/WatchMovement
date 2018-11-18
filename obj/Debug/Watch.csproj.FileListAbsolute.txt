@@ -4,3 +4,4 @@ C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\bin\Debug\Watch
 C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\bin\Debug\Watch.pdb
 C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.exe
 C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\obj\Debug\Watch.pdb
+C:\Users\tom\Documents\Visual Studio 2017\Projects\WatchMovement\bin\Debug\Watch.exe.config
